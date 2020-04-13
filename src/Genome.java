@@ -93,13 +93,17 @@ public class Genome {
     }
 
     public static void percentageRatio(List<String> progeny) {
-        Map<String, Integer> genMap = new TreeMap<>();
-        int n = 0;
+        Map<String, Integer> genMap = new HashMap<>();
+        int n;
+
         for (String s : progeny) {
-            if (progeny.get(0).equals(s)) {
-                n++;
+            n = 0;
+            for (int i = 0; i < progeny.size(); i++) {
+                if (s.equals(progeny.get(i))) {
+                    n++;
+                }
+                genMap.put(s, n);
             }
-            genMap.put(s, n);
         }
 
         int sum = 0;
