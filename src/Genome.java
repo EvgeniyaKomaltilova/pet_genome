@@ -105,16 +105,20 @@ public class Genome {
                 genMap.put(s, n);
             }
         }
-
         int sum = 0;
         for (int i : genMap.values()) {
             sum+=i;
         }
-
         System.out.println("Вероятное распределение генов в потомстве:");
+        List<String> list = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : genMap.entrySet()) {
             float percentage = (float) entry.getValue()/sum*100;
-            System.out.println(percentage + "% " + entry.getKey());
+            list.add(percentage + "% " + entry.getKey());
+        }
+        Collections.sort(list);
+        Collections.reverse(list);
+        for (String s : list) {
+            System.out.println(s);
         }
     }
 
