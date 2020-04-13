@@ -1,17 +1,18 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Genome {
 
     public static void main(String[] args) {
-        String motherGen = "AaBbCc";
-        String fatherGen = "aabbcc";
+        String firstParentGen = GetString();
+        String secondParentGen = GetString();
 
-        Set<String> motherSet = GenSet(motherGen);
-        Set<String> fatherSet = GenSet(fatherGen);
+        Set<String> motherSet = GenSet(firstParentGen);
+        Set<String> fatherSet = GenSet(secondParentGen);
         List<String> progeny = Progeny(motherSet, fatherSet);
-
-        for (String s :progeny)
-        System.out.println(s);
+        percentageRatio(progeny);
     }
 
     /* Метод GenSet принимает строку с генотипом существа в виде последовательности аллелей ("AaBbCC" etc)
@@ -74,12 +75,10 @@ public class Genome {
         return progenyList;
     }
 
-    //мой велосипед, сортирующий чары по возрастанию, но не пихающий заглавные буквы в начало
+    //сортировочка
     public static String charSort(String s) {
-        //Character[] sample = {'A','a','B','b','C','c','D','d','E','e','F','f','G','g','H','h','I','i','J','j','K','k','L','l','M','m','N','n','O','o','P','p','Q','q','R','r','S','s','T','t','U','u','V','v','W','w','X','x','Y','y','Z','z'};
         List<Character> sampleList = Arrays.asList('A','a','B','b','C','c','D','d','E','e','F','f','G','g','H','h','I','i','J','j','K','k','L','l','M','m','N','n','O','o','P','p','Q','q','R','r','S','s','T','t','U','u','V','v','W','w','X','x','Y','y','Z','z');
         char[] charArray = s.toCharArray();
-        String newString = "";
 
         for (int c = 0; c < s.length(); c++) {
             for (int i = 0; i < s.length() - 1; i++) {
@@ -93,4 +92,37 @@ public class Genome {
         return String.valueOf(charArray);
     }
 
+    public static void percentageRatio(List<String> progeny) {
+        Map<String, Integer> genMap = new TreeMap<>();
+        int n = 0;
+        for (String s : progeny) {
+            if (progeny.get(0).equals(s)) {
+                n++;
+            }
+            genMap.put(s, n);
+        }
+
+        int sum = 0;
+        for (int i : genMap.values()) {
+            sum+=i;
+        }
+
+        System.out.println("Вероятное распределение генов в потомстве:");
+        for (Map.Entry<String, Integer> entry : genMap.entrySet()) {
+            float percentage = (float) entry.getValue()/sum*100;
+            System.out.println(percentage + "% " + entry.getKey());
+        }
+    }
+
+    public static String GetString() {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Укажите генотип родителя в формате \"AaBbCc\"");
+        String s = "";
+        try {
+            s = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
 }
